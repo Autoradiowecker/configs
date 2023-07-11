@@ -1,1 +1,1 @@
-# configs für Hard und Software
+# NIXOS configs für Hard und Software Laptop
