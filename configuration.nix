@@ -4,6 +4,11 @@
 
 { config, pkgs, ... }:
 
+let
+  unstableTarball =
+    fetchTarball
+      https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -14,9 +19,21 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  system.copySystemConfiguration = true;
+  #gives fish nix directorys
+  programs.fish.enable = true;
+  programs.fish.shellAliases = {
+    copy = "cp";
+    egrep = "egrep --color=auto";
+    explorer = "xdg-open";
+    fgrep = "fgrep --color=auto";
+    grep = "grep --color=auto";
+    l = "ls -alh";
+    ll = "ls -l";
+    ls = "ls --color=tty";
+    move = "mv";
+  };
 
-  networking.hostName = "ClemensLaptop"; # Define your hostname.
+  networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -50,12 +67,7 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.displayManager.sessionCommands = ''
-   # export $(dbus-launch)
-    #gsettings set org.gnome.mutter experimental-features "['x11-randr-fractional-scaling']"
-    #gsettings set org.gnome.desktop.interface text-scaling-factor 0.9
-    #dconf write /org/gnome/desktop/interface/panel-size "0.9"
-    #'';
+
   # Configure keymap in X11
   services.xserver = {
     layout = "de";
@@ -85,13 +97,17 @@
     #media-session.enable = true;
   };
 
+  system.copySystemConfiguration = true;  
   # Enable touchpad support (enabled default in most desktopManager).
-    services.xserver.libinput.enable = true;
-
+  # services.xserver.libinput.enable = true;
+  
+  #standard Shell to fish
+  users.defaultUserShell = pkgs.fish;
+  
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.clemensguenther = {
     isNormalUser = true;
-    description = "Clemens Guenther";
+    description = "clemensguenther";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
@@ -99,24 +115,53 @@
     ];
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
+  nixpkgs.config = {
+    allowUnfree = true; # Allow unfree packages
+    packageOverrides = pkgs: { #Add unstable Packages
+      unstable = import unstableTarball {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
+  
+  nix = {
+    settings.experimental-features = [ "nix-command" "flakes" ];  # Allow flakes
+    settings.auto-optimise-store = true;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 14d";
+    };
+  };
+  
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     bitwarden
-     brave
-     discord
-     fish
-     gnomeExtensions.pop-shell
-     libreoffice
-     pavucontrol
-     pgadmin4
-     space-cadet-pinball
-     spotify
-     vscode
-     git
+  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    brave
+    discord
+    elixir
+    filezilla 
+    fish
+    flatpak
+    git
+    gnome.gnome-tweaks
+    gnomeExtensions.pop-shell
+    libreoffice
+    lutris
+    neofetch
+    openssl
+    pavucontrol
+    pgadmin4
+    space-cadet-pinball
+    spotify
+    steam
+    unstable.gnome.zenity
+    unstable.livebook #start cmd livebook server
+    vscode
+    winetricks
+    wineWowPackages.stable
+    yt-dlp
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
