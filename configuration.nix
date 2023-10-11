@@ -33,7 +33,7 @@ in
     move = "mv";
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "clemensLaptop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -67,7 +67,25 @@ in
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  environment.gnome.excludePackages = with pkgs.gnome; [
+    cheese      # photo booth
+    eog         # image viewer
+    epiphany    # web browser
+    evince      # document viewer
+    geary       # email client
+    seahorse    # password manager
+    simple-scan # document scanner
+    totem       # video player
+    yelp        # help viewer
 
+    #baobab      # disk usage analyzer
+    #file-roller # archive manager
+    #gedit       # text editor
+    #gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-contacts
+    #gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-photos gnome-screenshot
+    #gnome-system-monitor gnome-weather gnome-disk-utility pkgs.gnome-connections
+  ];
+  
   # Configure keymap in X11
   services.xserver = {
     layout = "de";
