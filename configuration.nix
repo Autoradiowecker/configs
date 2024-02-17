@@ -2,6 +2,8 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
+#sudo nixos-rebuild switch -I nixos-config=/home/clemensguenther/repos/configsLaptop/configuration.nix --upgrade
+
 { config, pkgs, ... }:
 
 let
@@ -160,6 +162,7 @@ in
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     brave
+    bottles 
     discord
     elixir
     filezilla 
@@ -170,6 +173,7 @@ in
     gnomeExtensions.pop-shell
     libreoffice
     lutris
+    memtester
     neofetch
     openssl
     pavucontrol
@@ -179,11 +183,18 @@ in
     steam
     unstable.gnome.zenity
     unstable.livebook #start cmd livebook server
+    vlc
     vscode
     winetricks
     wineWowPackages.stable
     yt-dlp
   ];
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
