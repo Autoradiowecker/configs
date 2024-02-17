@@ -165,6 +165,7 @@ in
     bottles 
     discord
     elixir
+    etcher
     filezilla 
     fish
     flatpak
