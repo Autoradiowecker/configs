@@ -66,13 +66,10 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false; #workaround github Issue: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-868771490
-  
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = with pkgs.gnome; [
+environment.gnome.excludePackages = with pkgs.gnome; [
     cheese      # photo booth
     eog         # image viewer
     epiphany    # web browser
@@ -90,7 +87,7 @@ in
     #gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-photos gnome-screenshot
     #gnome-system-monitor gnome-weather gnome-disk-utility pkgs.gnome-connections
   ];
-  
+
   # Configure keymap in X11
   services.xserver = {
     layout = "de";
@@ -120,27 +117,27 @@ in
     #media-session.enable = true;
   };
 
-  system.copySystemConfiguration = true;  
+system.copySystemConfiguration = true;  
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-  
+
   #standard Shell to fish
   users.defaultUserShell = pkgs.fish;
-  
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.clemensguenther = {
     isNormalUser = true;
-    description = "clemensguenther";
+    description = "Clemens Günther";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
-      thunderbird
+	    thunderbird
     ];
   };
 
   nixpkgs.config = {
     allowUnfree = true; # Allow unfree packages
-    packageOverrides = pkgs: { #Add unstable Packages
+  packageOverrides = pkgs: { #Add unstable Packages
       unstable = import unstableTarball {
         config = config.nixpkgs.config;
       };
@@ -156,12 +153,12 @@ in
       options = "--delete-older-than 14d";
     };
   };
-  
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    brave
+  brave
     bottles 
     discord
     elixir
@@ -190,7 +187,9 @@ in
     wineWowPackages.stable
     yt-dlp
   ];
-
+nixpkgs.config.permittedInsecurePackages = [
+                "electron-19.1.9"
+              ];
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
@@ -216,13 +215,12 @@ in
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-#test
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
 
 }
