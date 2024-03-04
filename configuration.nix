@@ -10,11 +10,13 @@ let
   unstableTarball =
     fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
 in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      (import "${home-manager}/nixos")
     ];
 
   # Bootloader.
@@ -34,6 +36,9 @@ in
     ls = "ls --color=tty";
     move = "mv";
   };
+  programs.fish.shellInit = 
+    "neofetch";
+  
 
   networking.hostName = "clemensLaptop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -69,7 +74,7 @@ in
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-environment.gnome.excludePackages = with pkgs.gnome; [
+  environment.gnome.excludePackages = with pkgs.gnome; [
     cheese      # photo booth
     eog         # image viewer
     epiphany    # web browser
@@ -117,12 +122,20 @@ environment.gnome.excludePackages = with pkgs.gnome; [
     #media-session.enable = true;
   };
 
-system.copySystemConfiguration = true;  
+  system.copySystemConfiguration = true;  
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
   #standard Shell to fish
-  users.defaultUserShell = pkgs.fish;
+  programs.bash = {
+  interactiveShellInit = ''
+    if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+    then
+      shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
+      exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
+    fi
+    '';
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.clemensguenther = {
@@ -133,6 +146,19 @@ system.copySystemConfiguration = true;
       firefox
 	    thunderbird
     ];
+  };
+  
+  home-manager.users.clemensguenther = {
+
+    programs.git = {
+      enable = true;
+      userName  = "Autoradiowecker";
+      userEmail = "clemens-g@gmx.de";
+    };
+
+    # The state version is required and should stay at the version you
+    # originally installed.
+    home.stateVersion = "23.11";
   };
 
   nixpkgs.config = {
@@ -160,28 +186,29 @@ system.copySystemConfiguration = true;
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   brave
     bottles 
-    cups-kyocera
+    #cups-kyocera
     discord
     elixir
     etcher
     filezilla 
     fish
-    flatpak
+   # flatpak
     git
     gnome.gnome-tweaks
     gnomeExtensions.pop-shell
     libreoffice
     lutris
-    memtester
+    memtest86-efi
     neofetch
     openssl
     pavucontrol
-    pgadmin4
-    space-cadet-pinball
+   # pgadmin4
+   # space-cadet-pinball
     spotify
     steam
-    unstable.gnome.zenity
+   # unstable.gnome.zenity
     unstable.livebook #start cmd livebook server
+    virtualbox
     vlc
     vscode
     winetricks
@@ -191,10 +218,19 @@ system.copySystemConfiguration = true;
 nixpkgs.config.permittedInsecurePackages = [
                 "electron-19.1.9"
               ];
+
+  
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+    openFirewall = true;
   };
 
   # Some programs need SUID wrappers, can be configured further or are
