@@ -1,8 +1,10 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# * Edit this configuration file to define what should be installed on
+# * your system.  Help is available in the configuration.nix(5) man page
+# * and in the NixOS manual (accessible by running ‘nixos-help’).
 
-#sudo nixos-rebuild switch -I nixos-config=/home/clemensguenther/repos/configsLaptop/configuration.nix --upgrade
+#  useful commands
+#  sudo nixos-rebuild switch -I nixos-config=/home/clemensguenther/repos/configsLaptop/configuration.nix --upgrade
+#  nix-collect-garbage
 
 { config, pkgs, ... }:
 
@@ -187,6 +189,7 @@ in
   brave
     bottles 
     #cups-kyocera
+    copyq
     discord
     elixir
     etcher
@@ -196,6 +199,7 @@ in
     git
     gnome.gnome-tweaks
     gnomeExtensions.pop-shell
+    libarchive
     libreoffice
     lutris
     memtest86-efi
