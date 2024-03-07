@@ -12,7 +12,6 @@ let
   unstableTarball =
     fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
 in
 {
   imports =
@@ -143,7 +142,7 @@ in
   users.users.clemensguenther = {
     isNormalUser = true;
     description = "Clemens Günther";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "vboxusers" ];
     packages = with pkgs; [
       firefox
 	    thunderbird
@@ -157,6 +156,29 @@ in
       userName  = "Autoradiowecker";
       userEmail = "clemens-g@gmx.de";
     };
+
+    let
+      autostartPrograms = [ pkgs.firefox pkgs.thunderbird ]; #https://github.com/nix-community/home-manager/issues/3447
+    in
+    {
+      home.file = builtins.listToAttrs (map
+        (pkg:
+          {
+            name = ".config/autostart/" + pkg.pname + ".desktop";
+            value =
+              if pkg ? desktopItem then {
+                # Application has a desktopItem entry. 
+                # Assume that it was made with makeDesktopEntry, which exposes a
+                # text attribute with the contents of the .desktop file
+                text = pkg.desktopItem.text;
+              } else {
+                # Application does *not* have a desktopItem entry. Try to find a
+                # matching .desktop name in /share/apaplications
+                source = (pkg + "/share/applications/" + pkg.pname + ".desktop");
+              };
+          })
+        autostartPrograms);
+    }
 
     # The state version is required and should stay at the version you
     # originally installed.
@@ -189,13 +211,13 @@ in
   brave
     bottles 
     #cups-kyocera
-    copyq
+    copyq # env QT_QPA_PLATFORM=xcb copyq
     discord
     elixir
     etcher
     filezilla 
     fish
-   # flatpak
+    # flatpak
     git
     gnome.gnome-tweaks
     gnomeExtensions.pop-shell
@@ -206,19 +228,25 @@ in
     neofetch
     openssl
     pavucontrol
-   # pgadmin4
-   # space-cadet-pinball
+    # pgadmin4
+    # space-cadet-pinball
     spotify
     steam
-   # unstable.gnome.zenity
+    # unstable.gnome.zenity
     unstable.livebook #start cmd livebook server
-    virtualbox
+    # virtualbox https://discourse.nixos.org/t/virtualbox-kernel-driver-not-accessible/18629
     vlc
     vscode
     winetricks
     wineWowPackages.stable
     yt-dlp
   ];
+
+virtualisation.virtualbox.guest.enable = true;
+virtualisation.virtualbox.host.enable = true;
+virtualisation.virtualbox.host.enableExtensionPack = true;
+users.extraGroups.vboxusers.members = [ "clemensguenther" ];
+
 nixpkgs.config.permittedInsecurePackages = [
                 "electron-19.1.9"
               ];
