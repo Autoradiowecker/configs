@@ -144,7 +144,7 @@ in
   users.users.clemensguenther = {
     isNormalUser = true;
     description = "Clemens Günther";
-    extraGroups = [ "networkmanager" "wheel" "vboxusers" ];
+    extraGroups = [ "networkmanager" "wheel" "vboxusers" "docker"];
     packages = with pkgs; [
       firefox
 	    thunderbird
@@ -238,11 +238,11 @@ in
     wineWowPackages.stable
     yt-dlp
   ];
-
+  
+virtualisation.docker.enable = true;
 virtualisation.virtualbox.guest.enable = true;
 virtualisation.virtualbox.host.enable = true;
 virtualisation.virtualbox.host.enableExtensionPack = true;
-users.extraGroups.vboxusers.members = [ "clemensguenther" ];
 
 nixpkgs.config.permittedInsecurePackages = [
                 "electron-19.1.9"
