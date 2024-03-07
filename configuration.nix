@@ -13,7 +13,7 @@ let
     fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
-  autostartPrograms = [ pkgs.firefox pkgs.thunderbird ]; #https://github.com/nix-community/home-manager/issues/3447
+  autostartPrograms = [ pkgs.firefox pkgs.thunderbird pkgs.discord pkgs.fish pkgs.vscode ]; #https://github.com/nix-community/home-manager/issues/3447
 in
 {
   imports =
@@ -221,7 +221,7 @@ in
     libarchive
     libreoffice
     lutris
-    memtest86-efi
+    memtest86-efi # ! doesnt work 
     neofetch
     openssl
     pavucontrol
