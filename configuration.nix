@@ -25,6 +25,7 @@ in
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.plymouth.enable = true;
 
   #gives fish nix directorys
   programs.fish.enable = true;
