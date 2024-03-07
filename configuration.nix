@@ -38,6 +38,7 @@ in
     l = "ls -alh";
     ll = "ls -l";
     ls = "ls --color=tty";
+    lisa = "ls -lisa";
     move = "mv";
   };
   programs.fish.shellInit = 
