@@ -234,7 +234,7 @@ in
     steam
     # unstable.gnome.zenity
     unstable.livebook #start cmd livebook server
-    # virtualbox https://discourse.nixos.org/t/virtualbox-kernel-driver-not-accessible/18629
+    # virtualbox https://discourse.nixos.org/t/virtualbox-kernel-driver-not-accessible/18629 TLDR: virtual box is enabled by virtualisation.virtualbox.host.enable = true;
     vlc
     vscode
     winetricks
