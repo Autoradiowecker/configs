@@ -12,6 +12,8 @@ let
   unstableTarball =
     fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
+  autostartPrograms = [ pkgs.firefox pkgs.thunderbird ]; #https://github.com/nix-community/home-manager/issues/3447
 in
 {
   imports =
@@ -157,28 +159,23 @@ in
       userEmail = "clemens-g@gmx.de";
     };
 
-    let
-      autostartPrograms = [ pkgs.firefox pkgs.thunderbird ]; #https://github.com/nix-community/home-manager/issues/3447
-    in
-    {
-      home.file = builtins.listToAttrs (map
-        (pkg:
-          {
-            name = ".config/autostart/" + pkg.pname + ".desktop";
-            value =
-              if pkg ? desktopItem then {
-                # Application has a desktopItem entry. 
-                # Assume that it was made with makeDesktopEntry, which exposes a
-                # text attribute with the contents of the .desktop file
-                text = pkg.desktopItem.text;
-              } else {
-                # Application does *not* have a desktopItem entry. Try to find a
-                # matching .desktop name in /share/apaplications
-                source = (pkg + "/share/applications/" + pkg.pname + ".desktop");
-              };
-          })
-        autostartPrograms);
-    }
+    home.file = builtins.listToAttrs (map #https://github.com/nix-community/home-manager/issues/3447
+      (pkg:
+        {
+          name = ".config/autostart/" + pkg.pname + ".desktop";
+          value =
+            if pkg ? desktopItem then {
+              # Application has a desktopItem entry. 
+              # Assume that it was made with makeDesktopEntry, which exposes a
+              # text attribute with the contents of the .desktop file
+              text = pkg.desktopItem.text;
+            } else {
+              # Application does *not* have a desktopItem entry. Try to find a
+              # matching .desktop name in /share/apaplications
+              source = (pkg + "/share/applications/" + pkg.pname + ".desktop");
+            };
+        })
+      autostartPrograms);
 
     # The state version is required and should stay at the version you
     # originally installed.
