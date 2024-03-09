@@ -25,7 +25,11 @@ in
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  #boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.kernelParams = ["quiet"];
   boot.plymouth.enable = true;
+  boot.plymouth.theme="breeze";
+  
 
   #gives fish nix directorys
   programs.fish.enable = true;
@@ -221,6 +225,7 @@ in
     gnome.gnome-tweaks
     gnomeExtensions.pop-shell
     libarchive
+    libnvme # doesnt work
     libreoffice
     lutris
     memtest86-efi # ! doesnt work 
