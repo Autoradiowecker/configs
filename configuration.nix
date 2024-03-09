@@ -258,7 +258,11 @@ nixpkgs.config.permittedInsecurePackages = [
                 "electron-19.1.9"
               ];
 
-  
+#Power Management
+powerManagement.enable = true;
+services.thermald.enable = true;
+cpufreq.enable = true;
+powerManagement.powertop.enable = true; # maybe makes usb Devices unresponsive
 
   programs.steam = {
     enable = true;
