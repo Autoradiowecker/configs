@@ -27,8 +27,8 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   #boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.kernelParams = ["quiet"];
-  boot.plymouth.enable = true;
-  boot.plymouth.theme="breeze";
+  #boot.plymouth.enable = true; 
+  #boot.plymouth.theme="breeze"; #breeze theme is ugly. Dont want to look how to change it right now
   
 
   #gives fish nix directorys
