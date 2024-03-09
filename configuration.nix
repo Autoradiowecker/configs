@@ -224,9 +224,11 @@ in
     git
     gnome.gnome-tweaks
     gnomeExtensions.pop-shell
+    gsmartcontrol # ! doesnt work
     libarchive
-    libnvme # doesnt work
+    libnvme # ! ???
     libreoffice
+    # libzbd # ! ??? 
     lutris
     memtest86-efi # ! doesnt work 
     neofetch
@@ -234,6 +236,7 @@ in
     pavucontrol
     # pgadmin4
     # space-cadet-pinball
+    smartmontools
     spotify
     steam
     # unstable.gnome.zenity
