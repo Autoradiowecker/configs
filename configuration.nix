@@ -79,6 +79,8 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.videoDrivers = [ "amdgpu" ];
+  # maybe enable southen islands?? see https://nixos.wiki/wiki/AMD_GPU
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
