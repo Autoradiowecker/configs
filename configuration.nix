@@ -237,7 +237,7 @@ in
     openssl
     pavucontrol
     # pgadmin4
-    # space-cadet-pinball
+    space-cadet-pinball
     smartmontools
     spotify
     steam
@@ -250,15 +250,18 @@ in
     wineWowPackages.stable
     yt-dlp
   ];
-  
+
+
+              nixpkgs.config.permittedInsecurePackages = [
+                "electron-19.1.9"
+              ];
+            
+
+
 virtualisation.docker.enable = true;
 virtualisation.virtualbox.guest.enable = true;
 virtualisation.virtualbox.host.enable = true;
 virtualisation.virtualbox.host.enableExtensionPack = true;
-
-nixpkgs.config.permittedInsecurePackages = [
-                "electron-19.1.9"
-              ];
 
 #Power Management
 powerManagement.enable = true;
