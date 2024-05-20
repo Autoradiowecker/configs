@@ -241,8 +241,10 @@ in
     smartmontools
     spotify
     steam
+    stepmania
     # unstable.gnome.zenity
     unstable.livebook #start cmd livebook server
+    unzip
     # virtualbox https://discourse.nixos.org/t/virtualbox-kernel-driver-not-accessible/18629 TLDR: virtual box is enabled by virtualisation.virtualbox.host.enable = true;
     vlc
     vscode
@@ -302,10 +304,10 @@ powerManagement.powertop.enable = true; # maybe makes usb Devices unresponsive
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+   services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+   networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
