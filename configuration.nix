@@ -216,6 +216,7 @@ in
   brave
     bottles 
     #cups-kyocera
+    caffeine-ng
     copyq # env QT_QPA_PLATFORM=xcb copyq
     discord
     elixir
@@ -230,6 +231,7 @@ in
     libarchive
     libnvme # ! ???
     libreoffice
+    linuxConsoleTools
     # libzbd # ! ??? 
     lutris
     memtest86-efi # ! doesnt work 
@@ -241,7 +243,7 @@ in
     smartmontools
     spotify
     steam
-    stepmania
+    unstable.stepmania
     # unstable.gnome.zenity
     unstable.livebook #start cmd livebook server
     unzip
