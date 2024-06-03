@@ -12,7 +12,7 @@ let
   unstableTarball =
     fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz";
   autostartPrograms = [ pkgs.firefox pkgs.thunderbird pkgs.discord pkgs.fish pkgs.vscode ]; #https://github.com/nix-community/home-manager/issues/3447
 in
 {
@@ -58,6 +58,7 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
+  
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -106,8 +107,8 @@ in
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "de";
-    xkbVariant = "";
+    xkb.layout = "de";
+    xkb.variant = "";
   };
 
   # Configure console keymap
@@ -219,8 +220,9 @@ in
     caffeine-ng
     copyq # env QT_QPA_PLATFORM=xcb copyq
     discord
+    drawio
     elixir
-    etcher
+    #etcher #deprecated 2024-06 (uses EOL electron)
     filezilla 
     fish
     # flatpak
@@ -228,6 +230,7 @@ in
     gnome.gnome-tweaks
     gnomeExtensions.pop-shell
     gsmartcontrol # ! doesnt work
+    jetbrains.rider
     libarchive
     libnvme # ! ???
     libreoffice
@@ -239,6 +242,7 @@ in
     openssl
     pavucontrol
     # pgadmin4
+    postman #cant download package
     space-cadet-pinball
     smartmontools
     spotify
@@ -253,14 +257,7 @@ in
     winetricks
     wineWowPackages.stable
     yt-dlp
-  ];
-
-
-              nixpkgs.config.permittedInsecurePackages = [
-                "electron-19.1.9"
-              ];
-            
-
+  ];           
 
 virtualisation.docker.enable = true;
 virtualisation.virtualbox.guest.enable = true;
@@ -291,7 +288,7 @@ powerManagement.powertop.enable = true; # maybe makes usb Devices unresponsive
 
   services.avahi = {
     enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
     openFirewall = true;
   };
 
